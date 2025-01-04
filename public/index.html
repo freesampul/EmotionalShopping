@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion-Based Shopping List</title>
+    <style>
+        #container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        canvas {
+            position: absolute;
+        }
+        #emotionDisplay {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        #shoppingList {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #shoppingList ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #shoppingList li {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="emotionDisplay">Current Emotion: None</div>
+
+    <div id="container">
+        <video id="video" width="640" height="480" autoplay muted></video>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <div id="shoppingList">
+        <h2>Recommended Items</h2>
+        <ul id="items"></ul>
+    </div>
+
+    <script src="./face-api.min.js"></script>
+    <script src="./scripts.js"></script>
+    <script>
+        const shoppingItems = {
+            happy: ["Ice Cream", "Sunglasses", "Party Hat"],
+            sad: ["Chocolate", "Tissues", "Comfort Blanket"],
+            angry: ["Stress Ball", "Meditation App Subscription", "Boxing Gloves"],
+            neutral: ["Notebook", "Pen", "Tea"],
+            surprised: ["Gift Cards", "Camera", "Tickets to an Event"]
+        };
+
+        function updateShoppingList(emotion) {
+            const itemsList = document.getElementById('items');
+            itemsList.innerHTML = ""; // Clear existing items
+
+            if (shoppingItems[emotion]) {
+                shoppingItems[emotion].forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = item;
+                    itemsList.appendChild(listItem);
+                });
+            } else {
+                const listItem = document.createElement('li');
+                listItem.textContent = "No recommendations available.";
+                itemsList.appendChild(listItem);
+            }
+        }
+
+        // Example integration: Replace this with your emotion detection update logic
+        setInterval(() => {
+            const detectedEmotion = localStorage.getItem("currentEmotion"); // Simulate detected emotion
+            document.getElementById('emotionDisplay').textContent = `Current Emotion: ${detectedEmotion || "None"}`;
+            updateShoppingList(detectedEmotion);
+        }, 1000);
+    </script>
+</body>
+</html>
