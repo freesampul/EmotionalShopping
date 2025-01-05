@@ -58,7 +58,7 @@ const run = async () => {
             // Optionally, call a function to update the main page
             updateMainPageEmotion(dominantEmotion);
         }
-    }, 200);
+    }, 1000);
 };
 
 // Function to pass emotion to the main page

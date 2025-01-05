@@ -1,0 +1,72 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    transition: background-color 2s ease;
+}
+
+body.angry {
+    background-color: red;
+}
+
+body.neutral {
+    background-color: whitesmoke;
+}
+
+body.happy {
+    background-color: yellow;
+}
+
+body.disgusted {
+    background-color: green;
+}
+
+body.sad {
+    background-color: blue;
+}
+
+body.surprised {
+    background-color: purple;
+}
+
+body.fearful {
+    background-color: orange;
+}
+
+#shoppingList ul {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 0;
+}
+
+.shopping-item {
+    list-style: none;
+    text-align: center;
+}
+
+.item-link {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
+}
+
+.item-link:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.item-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.item-name {
+    display: block;
+    margin-top: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}

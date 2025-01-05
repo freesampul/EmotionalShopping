@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emotion-Based Shopping List</title>
+    <link rel="stylesheet" href="index.css">
     <style>
         #container {
             display: flex;
@@ -48,23 +49,27 @@
 
     <script src="./face-api.min.js"></script>
     <script src="./scripts.js"></script>
-    <script>
-        const shoppingItems = {
-            happy: ["Ice Cream", "Sunglasses", "Party Hat"],
-            sad: ["Chocolate", "Tissues", "Comfort Blanket"],
-            angry: ["Stress Ball", "Meditation App Subscription", "Boxing Gloves"],
-            neutral: ["Notebook", "Pen", "Tea"],
-            surprised: ["Gift Cards", "Camera", "Tickets to an Event"]
-        };
-
+    <script type="module">
+        import { shoppingItems } from './shoppingData.js';
+    
         function updateShoppingList(emotion) {
             const itemsList = document.getElementById('items');
             itemsList.innerHTML = ""; // Clear existing items
-
+    
             if (shoppingItems[emotion]) {
-                shoppingItems[emotion].forEach(item => {
+                const selectedItems = shoppingItems[emotion]
+                    .sort(() => 0.5 - Math.random()) // Shuffle items
+                    .slice(0, 3); // Select three random items
+    
+                selectedItems.forEach(item => {
                     const listItem = document.createElement('li');
-                    listItem.textContent = item;
+                    listItem.className = "shopping-item";
+                    listItem.innerHTML = `
+                        <a href="${item.link}" target="_blank" class="item-link">
+                            <img src="${item.image}" alt="${item.name}" class="item-image">
+                            <span class="item-name">${item.name}</span>
+                        </a>
+                    `;
                     itemsList.appendChild(listItem);
                 });
             } else {
@@ -73,13 +78,18 @@
                 itemsList.appendChild(listItem);
             }
         }
-
-        // Example integration: Replace this with your emotion detection update logic
+    
+        function updateBackground(emotion) {
+            document.body.className = emotion || ""; // Apply emotion class to body
+        }
+    
         setInterval(() => {
             const detectedEmotion = localStorage.getItem("currentEmotion"); // Simulate detected emotion
             document.getElementById('emotionDisplay').textContent = `Current Emotion: ${detectedEmotion || "None"}`;
             updateShoppingList(detectedEmotion);
+            updateBackground(detectedEmotion);
         }, 1000);
     </script>
+    
 </body>
 </html>
