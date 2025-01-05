@@ -52,6 +52,8 @@
     <script type="module">
         import { shoppingItems } from './shoppingData.js';
     
+        let previousEmotion = null; // Track the previous emotion
+    
         function updateShoppingList(emotion) {
             const itemsList = document.getElementById('items');
             itemsList.innerHTML = ""; // Clear existing items
@@ -83,13 +85,26 @@
             document.body.className = emotion || ""; // Apply emotion class to body
         }
     
+        function updateEmotionDisplay(emotion) {
+            const emotionDisplay = document.getElementById('emotionDisplay');
+            if (emotionDisplay) {
+                emotionDisplay.textContent = `Current Emotion: ${emotion || "None"}`;
+            }
+        }
+    
         setInterval(() => {
             const detectedEmotion = localStorage.getItem("currentEmotion"); // Simulate detected emotion
-            document.getElementById('emotionDisplay').textContent = `Current Emotion: ${detectedEmotion || "None"}`;
-            updateShoppingList(detectedEmotion);
-            updateBackground(detectedEmotion);
+    
+            // Update only if the emotion has changed
+            if (detectedEmotion && detectedEmotion !== previousEmotion) {
+                previousEmotion = detectedEmotion; // Update the tracked emotion
+                updateEmotionDisplay(detectedEmotion); // Update the emotion display
+                updateShoppingList(detectedEmotion); // Update the shopping list
+                updateBackground(detectedEmotion); // Update the background
+            }
         }, 1000);
     </script>
+    
     
 </body>
 </html>
