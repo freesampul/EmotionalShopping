@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emotion-Based Shopping List</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="./public/index.css">
     <style>
         #container {
             display: flex;
@@ -47,10 +47,10 @@
         <ul id="items"></ul>
     </div>
 
-    <script src="./face-api.min.js"></script>
-    <script src="./scripts.js"></script>
+    <script src="./public/face-api.min.js"></script>
+    <script src="./public/scripts.js"></script>
     <script type="module">
-        import { shoppingItems } from './shoppingData.js';
+        import { shoppingItems } from './public/shoppingItems.js';
     
         let previousEmotion = null; // Track the previous emotion
     
