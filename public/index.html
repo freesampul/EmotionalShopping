@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="favicon" rel="icon" type="image/x-icon" href="./neutral.ico">
+    <title>Emotional Shopping</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>
+        #container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        canvas {
+            position: absolute;
+        }
+        #emotionDisplay {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        #shoppingList {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #shoppingList ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #shoppingList li {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="emotionDisplay">Current Emotion: Loading...</div>
+
+    <div id="container">
+        <video id="video" width="640" height="480" autoplay muted></video>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <div id="shoppingList">
+        <h2>Recommended Items</h2>
+        <ul id="items"></ul>
+    </div>
+
+    <script src="./face-api.min.js"></script>
+    <script src="./scripts.js"></script>
+    <script type="module">
+        import { shoppingItems } from './shoppingData.js';
+    
+        let previousEmotion = null; // Track the previous emotion
+    
+        function updateShoppingList(emotion) {
+            const itemsList = document.getElementById('items');
+            itemsList.innerHTML = ""; // Clear existing items
+    
+            if (shoppingItems[emotion]) {
+                const selectedItems = shoppingItems[emotion]
+                    .sort(() => 0.5 - Math.random()) // Shuffle items
+                    .slice(0, 3); // Select three random items
+    
+                selectedItems.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.className = "shopping-item";
+                    listItem.innerHTML = `
+                        <a href="${item.link}" target="_blank" class="item-link">
+                            <img src="${item.image}" alt="${item.name}" class="item-image">
+                            <span class="item-name">${item.name}</span>
+                        </a>
+                    `;
+                    itemsList.appendChild(listItem);
+                });
+            } else {
+                const listItem = document.createElement('li');
+                listItem.textContent = "No recommendations available.";
+                itemsList.appendChild(listItem);
+            }
+        }
+    
+        function updateBackground(emotion) {
+            document.body.className = emotion || ""; // Apply emotion class to body
+        }
+    
+        function updateEmotionDisplay(emotion) {
+            const emotionDisplay = document.getElementById('emotionDisplay');
+            if (emotionDisplay) {
+                emotionDisplay.textContent = `Current Emotion: ${emotion || "None"}`;
+            }
+        }
+
+        function updateFavicon(emotion) {
+            const favicon = document.getElementById('favicon');
+            if (emotion === "happy") {
+                favicon.href = "./happy.ico";
+            } else if (emotion === "sad") {
+                favicon.href = "./sad.ico";
+            } else {
+                favicon.href = "./neutral.ico";
+            }
+        }
+    
+        setInterval(() => {
+            const detectedEmotion = localStorage.getItem("currentEmotion"); // Simulate detected emotion
+    
+            // Update only if the emotion has changed
+            if (detectedEmotion && detectedEmotion !== previousEmotion) {
+                previousEmotion = detectedEmotion; // Update the tracked emotion
+                updateEmotionDisplay(detectedEmotion); // Update the emotion display
+                updateShoppingList(detectedEmotion); // Update the shopping list
+                updateBackground(detectedEmotion); // Update the background
+                updateFavicon(detectedEmotion); // Update the favicon
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
